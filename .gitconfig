@@ -1,0 +1,162 @@
+[user]
+	name = David Oluwole
+	email = doluwole@fetchpackage.com
+; sourced (with some tweaks) from 
+; https://kenichishibata.medium.com/my-gitconfig-with-all-the-bells-and-whistles-9479530f12af
+[core]
+ pager = less -S
+ warnAmbiguousRefs = true
+ editor = vim
+ #excludesfile = /Users/david/.gitignore_global
+[branch]
+ autosetuprebase = always
+[rerere]
+ enabled = 1
+ autoupdate = 1
+[alias]
+ ; log aliases
+ lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+ lgall = !git lg --all
+ lga = !git lgall
+ l1 = log --oneline 
+ l1g = log --oneline --graph
+ l1gd = log --oneline --graph --decorate
+ l1dg = log --oneline --graph --decorate
+ l1dga = log --oneline --graph --all
+ l1gda = log --oneline --graph --decorate --all
+ logree = log --oneline --graph --decorate --all
+ le = log --oneline --decorate
+ ls = log --pretty=format:”%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]” --decorate --stat
+ ll = log --decorate --stat
+ la = log --pretty=format:”%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\[%cn]” --decorate --numstat
+ lp = log -p ; log patch to show file changes
+ lss = log -s ; stat will give you - and + 
+ lname = log --name-only 
+ l1name = log --name-only --oneline
+ lsig = log --show-signature
+ l1sig = log --oneline --show-signature
+ lgsig = !git lg --show-signature
+ lgallsig = !git lgall --show-signature
+ lgs = !git lgallsig
+; from alex’ s history 
+ history = log --graph --topo-order --decorate --oneline --boundary --date=iso  --pretty=format:’%>|(20) %C(yellow)%h%C(reset) %C(green)%cd%C(reset) %<(20)%C(blue)%an%C(reset) %s%C(blue)%d%C(reset)’
+ history-all = log --graph --topo-order --decorate --oneline --boundary --date=iso --pretty=format:’%>|(20) %C(yellow)%h%C(reset) %C(green)%cd%C(reset) %<(20)%C(blue)%an%C(reset) %s%C(blue)%d%C(reset)’ --all
+; special pull for submodules
+ spull = !git pull && git submodule sync --recursive && git submodule update --init --recursive
+ sspull= !git pull && git submodule update --init --recursive --remote 
+ pullr = pull --rebase
+; fetch all submodules
+ sfetch = submodule foreach ‘git fetch — all’
+; special pushes
+ pushallmaster = !git remote | xargs -L1 -I REMOTE git push REMOTE master
+ pushm = !git pushallmaster
+ poo = push --set-upstream origin HEAD
+; safe force pushing
+ pushf = push --force-with-lease
+ pushfm = !git pushm --force-with-lease
+; list aliases
+ lol = !git config -l | grep alias | cut -c 7- | tr '=' '\t' | cut -c -80
+ ;fancy list aliases `lol`
+; stash aliases
+ poop = stash pop
+ sl = stash list
+ sa = stash apply
+ ss = stash save
+ s = stash
+; commonly used branch commands
+ brv = branch -v
+ bv = branch -v
+ brav = branch -av
+ bravv = branch -avv
+ bravvl = !git branch -avv — color | less
+ bav = branch -av
+ bavv = branch -avv
+ brd = branch -d
+ brlocal = branch
+ brremote = branch -a
+ brlocaloneline = !git branch | grep -v \\* | xargs
+ brdeletelocal = !git branch -D `git brlocaloneline` || echo "Nothing to delete"
+ brallfromremotes = !git branch -a | grep 'remotes/' | grep -v "HEAD" | sed 's/remotes\\///'
+ brallremotesoneline = !git brallfromremotes | grep -v \\* | xargs
+ brdeleteremotes = !git branch -rD `git brallremotesoneline` || echo "Nothing to delete"
+ brcreatefromremotes = !git brallfromremotes | xargs git branch 
+ brsync = !git com && git brdeletelocal && git fetcha 
+ sync = !git brsync
+; brsync deletes all local branches and refetches all remotes
+ ; https://stackoverflow.com/questions/10610327/delete-all-local-git-branches#10610669
+; commonly used commands
+ rv = remote -v
+ co = checkout
+ cob = checkout -b
+ com = checkout master
+ cl = config -l
+ st = status
+ cloner = clone --recursive
+ cl = clone
+ ci = commit
+ cs = commit -S 
+ cam = commit -am
+ br = branch
+ fetchp = fetch --prune
+ fetcha = fetch --all
+ dc = diff --cached
+;Do not create any commits, if ff is not possible we manually resolve
+ ;conflicts
+ mergef = merge --ff-only
+# Diff untracked files by adding a tracked zero length blob
+ addn=add --intent-to-add
+; edit this
+ aliase = !vi ~/.gitconfig
+; merge tool and difftool usage
+ dt = difftool
+ mt = mergetool
+; resetters
+ r = reset
+ r1 = reset HEAD^
+ r2 = reset HEAD^^
+ rh = reset --hard
+ rh1 = reset HEAD^ --hard
+ rh2 = reset HEAD^^ --hard
+	last = lg -1
+[status]
+ submoduleSummary = true
+[difftool "vscode"]
+ tool = "code --wait --diff $LOCAL $REMOTE"
+[diff]
+ submodule = log
+ tool = vimdiff
+[merge]
+ tool = vimdiff
+ conflictstyle = diff3
+ ff = false
+[difftool]
+ #prompt = false
+[mergetool]
+ prompt = false
+[push]
+ default = simple
+[pull]
+ ff = only
+[url "https://"]
+ insteadOf = git://
+[color] 
+	ui = true
+[color "branch"]
+ current = magenta reverse
+ local = green bold 
+ remote = red bold
+[color "status"]
+ added = green
+ changed = cyan
+ untracked = red 
+[color "diff"]
+ meta = black bold
+ frag = magenta bold 
+ old = red blink 
+ plain = black dim
+ new = green ul 
+ whitespaces = red reverse
+; Some of the aliases can be found on 
+; http://durdn.com/blog/2012/11/22/must-have-git-aliases-advanced-examples/
+[commit]
+ #template = /Users/david/.stCommitMsg
