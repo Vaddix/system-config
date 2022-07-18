@@ -159,4 +159,4 @@
 ; Some of the aliases can be found on 
 ; http://durdn.com/blog/2012/11/22/must-have-git-aliases-advanced-examples/
 [commit]
- #template = /Users/david/.stCommitMsg
+ template = /Users/david/.gitmessage
