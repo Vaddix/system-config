@@ -99,3 +99,5 @@ function regression_reconnect {
 function gitpupstream {
  git pull --set-upstream origin/$1 $1
 }
+
+alias runPipelineImage='docker run --network=host -it -v $HERMES/:/hermes -v ~/.m2/:/root/.m2 --entrypoint /bin/bash cf5505978329'
